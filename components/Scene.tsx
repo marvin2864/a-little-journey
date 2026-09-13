@@ -16,7 +16,7 @@ type Props = {
 }
 
 export function Scene({ scene, sceneIndex, theme, total }: Props) {
-  const { activeSceneIndex } = useStory()
+  const { activeSceneIndex, audioManager } = useStory()
   const reducedMotion = useReducedMotion()
   const sectionRef = useRef<HTMLElement>(null)
   const videoRef = useRef<HTMLVideoElement>(null)
@@ -37,6 +37,23 @@ export function Scene({ scene, sceneIndex, theme, total }: Props) {
       video.pause()
     }
   }, [isActive, shouldMount])
+
+  // Report video progress to audio manager for end-cue triggering.
+  // Only the active scene's video drives tickEndCue.
+  useEffect(() => {
+    if (!isActive || !scene.musicEndCue) return
+    const video = videoRef.current
+    if (!video) return
+
+    const onTimeUpdate = () => {
+      if (!video.duration || !video.currentTime) return
+      const progress = video.currentTime / video.duration
+      audioManager.tickEndCue(progress)
+    }
+
+    video.addEventListener('timeupdate', onTimeUpdate)
+    return () => video.removeEventListener('timeupdate', onTimeUpdate)
+  }, [isActive, scene.musicEndCue, audioManager])
 
   // Scroll-driven text reveal. Each line fades up in sequence, holds, then the
   // whole block fades as the scene leaves. Skipped under reduced motion.

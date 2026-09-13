@@ -75,6 +75,7 @@ export function StoryProvider({ children }: { children: React.ReactNode }) {
     audioManager.unlock()
     if (settingsRef.current.sound) {
       audioManager.playTrack(scenes[0].musicCue)
+      armEndCue(scenes[0])
     }
     window.scrollTo(0, 0)
     // Brief breathing room so the loading screen is perceptible, then play.
@@ -88,9 +89,25 @@ export function StoryProvider({ children }: { children: React.ReactNode }) {
       if (prev === index) return prev
       if (settingsRef.current.sound) {
         audioManager.playTrack(scenes[index].musicCue)
+        armEndCue(scenes[index])
       }
       return index
     })
+  }, [])
+
+  // Arm the optional mid-scene end-cue track (final-scene handoff). No-op for
+  // scenes without musicEndCue / musicEndAt.
+  const armEndCue = useCallback((scene: (typeof scenes)[number]) => {
+    if (settingsRef.current.sound && scene.musicEndCue) {
+      audioManager.setEndCue(
+        scene.musicEndCue,
+        scene.musicEndAt,
+        scene.musicEndFadeIn,
+        scene.musicEndFadeOut,
+      )
+    } else {
+      audioManager.setEndCue(undefined)
+    }
   }, [])
 
   const updateSettings = useCallback((patch: Partial<ExperienceSettings>) => {

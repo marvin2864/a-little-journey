@@ -25,6 +25,14 @@ export type StoryScene = {
   text: string[]
   /** Visual transition into this scene. */
   transition?: TransitionType
+  /** Optional secondary track that plays partway through the scene (final scene handoff). */
+  musicEndCue?: string
+  /** Scene progress (0..1) at which the end cue should start. */
+  musicEndAt?: number
+  /** Fade-in duration for the end cue (ms). */
+  musicEndFadeIn?: number
+  /** Fade-out duration for the main cue when the end cue begins (ms). */
+  musicEndFadeOut?: number
 }
 
 export type AppPhase = 'intro' | 'loading' | 'playing' | 'ending'

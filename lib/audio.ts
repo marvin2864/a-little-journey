@@ -12,6 +12,8 @@
 const DEFAULT_VOLUME = 0.28 // ~28%, per DESIGN.md §12 (20–35%)
 const FADE_OUT_MS = 1200
 const FADE_IN_MS = 1500
+const END_CUE_FADE_IN_MS = 1800
+const END_CUE_FADE_OUT_MS = 1500
 
 /** ~330ms of silence. Base64 so the unlock gesture never triggers a network request. */
 const SILENT_WAV =
@@ -25,6 +27,11 @@ export class AudioManager {
   private volume = DEFAULT_VOLUME
   private muted = false
   private unlocked = false
+  private endCueTrack: Track | null = null
+  private endCueFired = false
+  private endCueAt = 1
+  private endCueFadeIn = 1500
+  private endCueFadeOut = 1200
   /** Fires when playback is blocked despite a gesture — UI shows the
    * "tap anywhere to begin the soundtrack" fallback (DESIGN.md §6). */
   onBlocked: (() => void) | null = null
@@ -88,6 +95,60 @@ export class AudioManager {
     this.current = next
     this.fadeIn(next, fadeInMs)
     if (previous) this.fadeOutAndDestroy(previous, FADE_OUT_MS)
+  }
+
+  /**
+   * Arm (or clear) a secondary track that takes over partway through a scene —
+   * the final scene's handoff from Iris to Turning Page as the frame fades to
+   * white. Pass no src to clear. Re-arming before tickEndCue() reaches `at`
+   * means the cue preloads in silence and is ready to start instantly.
+   */
+  setEndCue(
+    src?: string,
+    at = 1,
+    fadeInMs = END_CUE_FADE_IN_MS,
+    fadeOutMs = END_CUE_FADE_OUT_MS,
+  ): void {
+    this.clearEndCue()
+    if (!src) return
+    this.endCueAt = at
+    this.endCueFadeIn = fadeInMs
+    this.endCueFadeOut = fadeOutMs
+    const track = this.createTrack(src)
+    track.el.volume = 0
+    this.endCueTrack = track
+  }
+
+  /**
+   * Called on scroll with the active scene's progress (0..1). Fires the end cue
+   * exactly once per arming, past `musicEndAt`. Irreversible within a scene —
+   * scrolling back up keeps the ending track rather than restarting the main
+   * one mid-phrase.
+   */
+  tickEndCue(progress: number): void {
+    if (this.endCueFired || !this.endCueTrack || !this.unlocked) return
+    if (progress < this.endCueAt) return
+
+    this.endCueFired = true
+    const next = this.endCueTrack
+    const previous = this.current
+
+    next.el.volume = 0
+    void next.el.play().catch(() => this.onBlocked?.())
+    this.current = next
+    this.fadeIn(next, this.endCueFadeIn)
+    if (previous && previous !== next) {
+      this.fadeOutAndDestroy(previous, this.endCueFadeOut)
+    }
+  }
+
+  /** Drops any armed/unfired end cue. Never silences a track already audible. */
+  private clearEndCue(): void {
+    const track = this.endCueTrack
+    this.endCueTrack = null
+    this.endCueFired = false
+    this.endCueAt = 1
+    if (track && track !== this.current) this.destroyTrack(track)
   }
 
   pause(): void {
