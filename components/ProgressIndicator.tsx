@@ -9,7 +9,7 @@ import { scenes } from '@/data/story'
  * (no React re-render per frame, per performance-a11y).
  */
 export function ProgressIndicator() {
-  const { activeSceneIndex } = useStory()
+  const { activeSceneIndex, jumpToScene } = useStory()
   const mobileRef = useRef<HTMLDivElement>(null)
   const desktopRef = useRef<HTMLDivElement>(null)
 
@@ -43,14 +43,20 @@ export function ProgressIndicator() {
         <div ref={mobileRef} className="h-full w-0" style={{ background: accent }} />
       </div>
 
-      {/* Desktop: vertical line + chapter numbers */}
-      <div className="fixed right-6 top-1/2 z-40 hidden -translate-y-1/2 items-center gap-3 md:flex">
-        <span
-          className="text-[0.65rem] tabular-nums tracking-[0.3em]"
-          style={{ color: `${text}99` }}
+      {/* Desktop: vertical line + prev/next arrows (replaces 01/13 numbers) */}
+      <div className="fixed right-6 top-1/2 z-40 hidden -translate-y-1/2 flex-col items-center gap-3 md:flex">
+        <button
+          type="button"
+          onClick={() => jumpToScene(activeSceneIndex - 1)}
+          disabled={activeSceneIndex === 0}
+          data-interactive
+          aria-label="Previous scene"
+          className="flex h-8 w-8 items-center justify-center rounded-full border border-[var(--scene-text,#faf5eb)]/20 text-[var(--scene-text,#faf5eb)]/70 backdrop-blur-sm transition-all hover:border-[var(--scene-text,#faf5eb)]/50 hover:text-[var(--scene-text,#faf5eb)] focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#ffb7c5] disabled:cursor-not-allowed disabled:opacity-30"
         >
-          {String(activeSceneIndex + 1).padStart(2, '0')}
-        </span>
+          <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" aria-hidden="true">
+            <path d="M18 15l-6-6-6 6" strokeLinecap="round" strokeLinejoin="round" />
+          </svg>
+        </button>
         <div className="relative h-48 w-px" style={{ background: `${text}26` }}>
           <div
             ref={desktopRef}
@@ -58,12 +64,18 @@ export function ProgressIndicator() {
             style={{ background: `${text}b3`, height: 0 }}
           />
         </div>
-        <span
-          className="text-[0.65rem] tabular-nums tracking-[0.3em]"
-          style={{ color: `${text}66` }}
+        <button
+          type="button"
+          onClick={() => jumpToScene(activeSceneIndex + 1)}
+          disabled={activeSceneIndex >= scenes.length - 1}
+          data-interactive
+          aria-label="Next scene"
+          className="flex h-8 w-8 items-center justify-center rounded-full border border-[var(--scene-text,#faf5eb)]/20 text-[var(--scene-text,#faf5eb)]/70 backdrop-blur-sm transition-all hover:border-[var(--scene-text,#faf5eb)]/50 hover:text-[var(--scene-text,#faf5eb)] focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#ffb7c5] disabled:cursor-not-allowed disabled:opacity-30"
         >
-          {String(scenes.length).padStart(2, '0')}
-        </span>
+          <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" aria-hidden="true">
+            <path d="M6 9l6 6 6-6" strokeLinecap="round" strokeLinejoin="round" />
+          </svg>
+        </button>
       </div>
     </>
   )

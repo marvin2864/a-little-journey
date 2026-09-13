@@ -25,9 +25,54 @@ export function StoryPlayer() {
     useStory()
   const rootRef = useRef<HTMLDivElement>(null)
   const reducedMotion = useReducedMotion()
-  const lenisRef = useLenis(!reducedMotion)
+  const lenisRef = useLenis(!reducedMotion && settings.autoScroll)
 
   useScrollProgress(rootRef)
+
+  // Manual scroll stepper: with auto-scroll off, each wheel/touch gesture
+  // advances exactly one scene (up or down) — even a small flick lands on the
+  // next section instead of stopping between scenes. Native scroll is taken
+  // over here; keyboard arrows (below) cover the same jumps.
+  useEffect(() => {
+    if (settings.autoScroll) return
+
+    let locked = false
+    const move = (dir: 1 | -1) => {
+      if (locked) return
+      locked = true
+      jumpToScene(activeSceneIndex + dir)
+      window.setTimeout(() => {
+        locked = false
+      }, 900)
+    }
+
+    const onWheel = (e: WheelEvent) => {
+      e.preventDefault()
+      if (Math.abs(e.deltaY) < 2) return
+      move(e.deltaY > 0 ? 1 : -1)
+    }
+
+    let touchY = 0
+    const onTouchStart = (e: TouchEvent) => {
+      touchY = e.touches[0].clientY
+    }
+    const onTouchMove = (e: TouchEvent) => {
+      e.preventDefault()
+      const dy = touchY - e.touches[0].clientY
+      if (Math.abs(dy) < 30) return
+      move(dy > 0 ? 1 : -1)
+      touchY = e.touches[0].clientY
+    }
+
+    window.addEventListener('wheel', onWheel, { passive: false })
+    window.addEventListener('touchstart', onTouchStart, { passive: true })
+    window.addEventListener('touchmove', onTouchMove, { passive: false })
+    return () => {
+      window.removeEventListener('wheel', onWheel)
+      window.removeEventListener('touchstart', onTouchStart)
+      window.removeEventListener('touchmove', onTouchMove)
+    }
+  }, [settings.autoScroll, activeSceneIndex, jumpToScene])
 
   // Auto-scroll: advance after each scene settles. Any manual wheel/touch
   // input cancels the pending advance (user is never trapped, DESIGN.md §11).
@@ -116,7 +161,7 @@ export function StoryPlayer() {
 
   return (
     <>
-      <div ref={rootRef} className="relative w-full snap-y snap-mandatory">
+      <div ref={rootRef} className="relative w-full">
         {scenes.map((scene, i) => (
           <Scene
             key={scene.id}
