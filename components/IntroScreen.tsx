@@ -3,23 +3,27 @@
 import { useEffect } from 'react'
 import Image from 'next/image'
 import { useStory } from '@/context/StoryContext'
-import { scenes } from '@/data/story'
+import { scenes, LOGO } from '@/data/story'
 
 export function IntroScreen() {
   const { settings, updateSettings, enterStory } = useStory()
 
-  // Preload the first video on mount so ENTER feels instant.
+  // Warm up the first scene video over the network so ENTER feels instant.
+  // <link rel=preload as=video> isn't a supported combo (console warning);
+  // a paused, muted <video> preload does the job.
   useEffect(() => {
-    const existing = document.head.querySelector<HTMLLinkElement>(
-      'link[data-preload-first-video]',
-    )
-    if (existing) return
-    const l = document.createElement('link')
-    l.rel = 'preload'
-    l.as = 'video'
-    l.href = scenes[0].video
-    l.setAttribute('data-preload-first-video', '')
-    document.head.appendChild(l)
+    const warm = document.createElement('video')
+    warm.src = scenes[0].video
+    warm.preload = 'auto'
+    warm.muted = true
+    warm.playsInline = true
+    warm.style.display = 'none'
+    document.body.appendChild(warm)
+    return () => {
+      warm.removeAttribute('src')
+      warm.load()
+      warm.remove()
+    }
   }, [])
 
   return (
@@ -30,7 +34,7 @@ export function IntroScreen() {
       {/* Logo with breathing animation */}
       <div className="animate-breathe relative mb-10">
         <Image
-          src="/assets/i/logo.png"
+          src={LOGO}
           alt="A Little Journey"
           width={128}
           height={128}

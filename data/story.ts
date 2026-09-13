@@ -3,12 +3,11 @@ import type {
   StoryScene,
   StoryTheme,
 } from '@/types/story'
+import { cldVideo, cldAudio, cldImage } from '@/lib/cloudinary'
 
 /**
- * Scene sequence. Video + music paths point at real files under
- * public/assets/ (see asset-audit skill). Do not invent filenames.
- * Paths contain spaces (and one en-dash); browsers encode them automatically
- * when set as src/href, and static file serving resolves both forms.
+ * Scene sequence. All media is served from the Cloudinary CDN (see
+ * lib/cloudinary.ts for the URL builders and ID conventions).
  *
  * Scenes that belong to one emotional sequence intentionally reuse the same
  * soundtrack (see DESIGN.md §12 "Scene Music Behavior").
@@ -16,105 +15,105 @@ import type {
 export const scenes: StoryScene[] = [
   {
     id: 'morning',
-    video: '/assets/v/SCENE 01 - A Normal Morning.mp4',
+    video: cldVideo('SCENE_01_-_A_Normal_Morning'),
     theme: 'morning',
-    musicCue: '/assets/m/Petit Biscuit - Sunset Lover.mp3',
+    musicCue: cldAudio('Petit_Biscuit_-_Sunset_Lover'),
     transition: 'fade',
     text: ['One ordinary morning…', 'He decided to go somewhere.'],
   },
   {
     id: 'ticket',
-    video: '/assets/v/SCENE 02 - The Unexpected Ticket.mp4',
+    video: cldVideo('SCENE_02_-_The_Unexpected_Ticket'),
     theme: 'morning',
-    musicCue: '/assets/m/Petit Biscuit - Sunset Lover.mp3',
+    musicCue: cldAudio('Petit_Biscuit_-_Sunset_Lover'),
     transition: 'fade',
     text: ['A flight. A promotion.', 'A chance to reward himself.'],
   },
   {
     id: 'reward',
-    video: '/assets/v/SCENE 03 - Self Reward.mp4',
+    video: cldVideo('SCENE_03_-_Self_Reward'),
     theme: 'morning',
-    musicCue: '/assets/m/Petit Biscuit - Sunset Lover.mp3',
+    musicCue: cldAudio('Petit_Biscuit_-_Sunset_Lover'),
     transition: 'dissolve',
     text: ['Sometimes you just have to go.'],
   },
   {
     id: 'flying',
-    video: '/assets/v/SCENE 04 - Flying to Japan.mp4',
+    video: cldVideo('SCENE_04_-_Flying_to_Japan'),
     theme: 'journey',
-    musicCue: '/assets/m/The Temper Trap - Sweet Disposition.mp3',
+    musicCue: cldAudio('The_Temper_Trap_-_Sweet_Disposition'),
     transition: 'dissolve',
     text: ['Above the clouds,', 'a new chapter began.'],
   },
   {
     id: 'japan',
-    video: '/assets/v/SCENE 05 - Japan.mp4',
+    video: cldVideo('SCENE_05_-_Japan'),
     theme: 'japan',
-    musicCue: '/assets/m/Yorushika – Itte rasshai.mp3',
+    musicCue: cldAudio('Yorushika_Itte_rasshai'),
     transition: 'dissolve',
     text: ['A world he had only dreamed of.'],
   },
   {
     id: 'meeting',
-    video: '/assets/v/SCENE 06 - The First Meeting.mp4',
+    video: cldVideo('SCENE_06_-_The_First_Meeting'),
     theme: 'sakura',
-    musicCue: '/assets/m/Stephen Sanchez - Until I Found You.mp3',
+    musicCue: cldAudio('Stephen_Sanchez_-_Until_I_Found_You'),
     transition: 'fade',
     text: ['Then, something unexpected happened.', 'He met her.'],
   },
   {
     id: 'instagram',
-    video: '/assets/v/SCENE 07 - Instagram.mp4',
+    video: cldVideo('SCENE_07_-_Instagram'),
     theme: 'sakura',
-    musicCue: '/assets/m/Lauv - I Like Me Better.mp3',
+    musicCue: cldAudio('Lauv_-_I_Like_Me_Better'),
     transition: 'dissolve',
     text: ['A name. A smile.', 'One follow that started everything.'],
   },
   {
     id: 'days-later',
-    video: '/assets/v/SCENE 08 - A Few Days Later.mp4',
+    video: cldVideo('SCENE_08_-_A_Few_Days_Later'),
     theme: 'sakura',
-    musicCue: '/assets/m/Lauv - I Like Me Better.mp3',
+    musicCue: cldAudio('Lauv_-_I_Like_Me_Better'),
     transition: 'dissolve',
     text: ['Days turned into moments', 'neither of them wanted to end.'],
   },
   {
     id: 'snow',
-    video: "/assets/v/SCENE 09 - Let's Play in the Snow.mp4",
+    video: cldVideo('SCENE_09_-_Let_s_Play_in_the_Snow'),
     theme: 'snow',
-    musicCue: '/assets/m/beabadoobee - Glue Song.mp3',
+    musicCue: cldAudio('beabadoobee_-_Glue_Song'),
     transition: 'pink-to-blue',
     text: ['Somewhere between laughter and snow…', 'they became a little closer.'],
   },
   {
     id: 'night-city',
-    video: '/assets/v/SCENE 10 - The Night City.mp4',
+    video: cldVideo('SCENE_10_-_The_Night_City'),
     theme: 'night',
-    musicCue: '/assets/m/The 1975 - About You.mp3',
+    musicCue: cldAudio('The_1975_-_About_You'),
     transition: 'blue-to-navy',
     text: ['In a city full of people…', '…it felt like there were only two.'],
   },
   {
     id: 'before-home',
-    video: '/assets/v/SCENE 11 - Before Going Home.mp4',
+    video: cldVideo('SCENE_11_-_Before_Going_Home'),
     theme: 'night',
-    musicCue: '/assets/m/Multo - Cup of Joe.mp3',
+    musicCue: cldAudio('Multo_-_Cup_of_Joe'),
     transition: 'fade',
     text: ['Before he went home…'],
   },
   {
     id: 'back-sakura',
-    video: '/assets/v/SCENE 12 - Back Where It Started.mp4',
+    video: cldVideo('SCENE_12_-_Back_Where_It_Started'),
     theme: 'sakura',
-    musicCue: '/assets/m/Goo Goo Dolls - Iris.mp3',
+    musicCue: cldAudio('Goo_Goo_Dolls_-_Iris'),
     transition: 'dark-to-cream',
     text: ['…he went back', 'to where it all began.'],
   },
   {
     id: 'photo',
-    video: '/assets/v/FINAL SHOT - The Photo.mp4',
+    video: cldVideo('FINAL_SHOT_-_The_Photo'),
     theme: 'ending',
-    musicCue: '/assets/m/Turning Page - Sleeping At Last.mp3',
+    musicCue: cldAudio('Turning_Page_-_Sleeping_At_Last'),
     transition: 'dark-to-cream',
     text: [
       'Some journeys end.',
@@ -195,5 +194,5 @@ export const chapters: { label: string; sceneIndex: number }[] = [
   { label: 'Goodbye', sceneIndex: 11 },
 ]
 
-export const LOGO = '/assets/i/logo.png'
-export const OPENGRAPH = '/assets/i/opengraph.png'
+export const LOGO = cldImage('logo')
+export const OPENGRAPH = cldImage('opengraph')

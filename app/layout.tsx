@@ -1,5 +1,6 @@
 import type { Metadata, Viewport } from 'next'
 import localFont from 'next/font/local'
+import { LOGO, OPENGRAPH } from '@/data/story'
 import './globals.css'
 
 // Path resolves relative to this file; next/font self-hosts and optimizes it.
@@ -16,15 +17,15 @@ export const metadata: Metadata = {
   openGraph: {
     title: 'A Little Journey',
     description: 'A small journey, an unexpected meeting, and a memory that stayed.',
-    images: ['/assets/i/opengraph.png'],
+    images: [OPENGRAPH],
     type: 'website',
   },
   twitter: {
     card: 'summary_large_image',
   },
   icons: {
-    icon: '/assets/i/logo.png',
-    apple: '/assets/i/logo.png',
+    icon: LOGO,
+    apple: LOGO,
   },
 }
 

@@ -1,13 +1,14 @@
 'use client'
 
 import Image from 'next/image'
+import { LOGO } from '@/data/story'
 
 export function LoadingScreen() {
   return (
     <main className="fixed inset-0 z-50 flex flex-col items-center justify-center gap-8 bg-[#07070f]">
       <div className="animate-breathe">
         <Image
-          src="/assets/i/logo.png"
+          src={LOGO}
           alt=""
           width={72}
           height={72}
