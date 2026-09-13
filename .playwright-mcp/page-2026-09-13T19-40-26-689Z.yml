@@ -1,0 +1,105 @@
+- generic [active] [ref=e28]:
+  - button "Open Next.js Dev Tools" [ref=e29] [cursor=pointer]:
+    - generic [ref=e32]:
+      - text: Compiling
+      - generic [ref=e33]:
+        - generic [ref=e34]: .
+        - generic [ref=e35]: .
+        - generic [ref=e36]: .
+  - alert [ref=e37]
+  - generic [ref=e38]:
+    - region "Scene 1 of 13" [ref=e39]:
+      - generic [ref=e42]:
+        - paragraph [ref=e43]: One ordinary morning…
+        - paragraph [ref=e44]: He decided to go somewhere.
+      - generic [aria-hidden] [ref=e45]: 01 / 13
+    - region "Scene 2 of 13" [ref=e46]:
+      - generic [ref=e49]:
+        - paragraph [ref=e50]: A flight. A promotion.
+        - paragraph [ref=e51]: A chance to reward himself.
+      - generic [aria-hidden] [ref=e52]: 02 / 13
+    - region "Scene 3 of 13" [ref=e53]:
+      - paragraph [ref=e57]: Sometimes you just have to go.
+      - generic [aria-hidden] [ref=e58]: 03 / 13
+    - region "Scene 4 of 13" [ref=e59]:
+      - generic [ref=e62]:
+        - paragraph [ref=e63]: Above the clouds,
+        - paragraph [ref=e64]: a new chapter began.
+      - generic [aria-hidden] [ref=e65]: 04 / 13
+    - region "Scene 5 of 13" [ref=e66]:
+      - paragraph [ref=e70]: A world he had only dreamed of.
+      - generic [aria-hidden] [ref=e71]: 05 / 13
+    - region "Scene 6 of 13" [ref=e72]:
+      - generic [ref=e75]:
+        - paragraph [ref=e76]: Then, something unexpected happened.
+        - paragraph [ref=e77]: He met her.
+      - generic [aria-hidden] [ref=e78]: 06 / 13
+    - region "Scene 7 of 13" [ref=e79]:
+      - generic [ref=e82]:
+        - paragraph [ref=e83]: A name. A smile.
+        - paragraph [ref=e84]: One follow that started everything.
+      - generic [aria-hidden] [ref=e85]: 07 / 13
+    - region "Scene 8 of 13" [ref=e86]:
+      - generic [ref=e89]:
+        - paragraph [ref=e90]: Days turned into moments
+        - paragraph [ref=e91]: neither of them wanted to end.
+      - generic [aria-hidden] [ref=e92]: 08 / 13
+    - region "Scene 9 of 13" [ref=e93]:
+      - generic [ref=e96]:
+        - paragraph [ref=e97]: Somewhere between laughter and snow…
+        - paragraph [ref=e98]: they became a little closer.
+      - generic [aria-hidden] [ref=e99]: 09 / 13
+    - region "Scene 10 of 13" [ref=e100]:
+      - generic [ref=e103]:
+        - paragraph [ref=e104]: In a city full of people…
+        - paragraph [ref=e105]: …it felt like there were only two.
+      - generic [aria-hidden] [ref=e106]: 10 / 13
+    - region "Scene 11 of 13" [ref=e107]:
+      - paragraph [ref=e111]: Before he went home…
+      - generic [aria-hidden] [ref=e112]: 11 / 13
+    - region "Scene 12 of 13" [ref=e113]:
+      - generic [ref=e116]:
+        - paragraph [ref=e117]: …he went back
+        - paragraph [ref=e118]: to where it all began.
+      - generic [aria-hidden] [ref=e119]: 12 / 13
+    - region "Scene 13 of 13" [ref=e120]:
+      - generic [ref=e123]:
+        - paragraph [ref=e124]: Some journeys end.
+        - paragraph [ref=e125]: Some memories stay.
+        - paragraph [ref=e126]: And some people…
+        - paragraph [ref=e127]: …become part of the journey.
+      - generic [aria-hidden] [ref=e128]: 13 / 13
+  - generic [ref=e129]:
+    - generic [ref=e130]: "01"
+    - generic [ref=e132]: "13"
+  - navigation "Scene navigation" [ref=e133]:
+    - 'button "Jump to scene 1: One ordinary morning…..." [ref=e134]':
+      - generic: One ordinary morning…
+    - 'button "Jump to scene 2: A flight. A promotion...." [ref=e135]':
+      - generic: A flight. A promotion.
+    - 'button "Jump to scene 3: Sometimes you just have to go...." [ref=e136]':
+      - generic: Sometimes you just have to go.
+    - 'button "Jump to scene 4: Above the clouds,..." [ref=e137]':
+      - generic: Above the clouds,
+    - 'button "Jump to scene 5: A world he had only dreamed of..." [ref=e138]':
+      - generic: A world he had only dreamed of.
+    - 'button "Jump to scene 6: Then, something unexpected hap..." [ref=e139]':
+      - generic: Then, something unexpected happened.
+    - 'button "Jump to scene 7: A name. A smile...." [ref=e140]':
+      - generic: A name. A smile.
+    - 'button "Jump to scene 8: Days turned into moments..." [ref=e141]':
+      - generic: Days turned into moments
+    - 'button "Jump to scene 9: Somewhere between laughter and..." [ref=e142]':
+      - generic: Somewhere between laughter and snow…
+    - 'button "Jump to scene 10: In a city full of people…..." [ref=e143]':
+      - generic: In a city full of people…
+    - 'button "Jump to scene 11: Before he went home…..." [ref=e144]':
+      - generic: Before he went home…
+    - 'button "Jump to scene 12: …he went back..." [ref=e145]':
+      - generic: …he went back
+    - 'button "Jump to scene 13: Some journeys end...." [ref=e146]':
+      - generic: Some journeys end.
+  - generic: Scroll to begin
+  - generic [ref=e147]:
+    - button "Mute music" [ref=e148]
+    - button "Start auto story" [ref=e153]

@@ -1,0 +1,5 @@
+- generic [active]:
+  - button "Open Next.js Dev Tools" [ref=f1e24] [cursor=pointer]
+  - alert [ref=f1e28]
+  - main [ref=f1e29]:
+    - paragraph [ref=f1e32]: Preparing your journey…
