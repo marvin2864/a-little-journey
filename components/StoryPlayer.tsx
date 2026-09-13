@@ -116,7 +116,7 @@ export function StoryPlayer() {
 
   return (
     <>
-      <div ref={rootRef} className="relative w-full">
+      <div ref={rootRef} className="relative w-full snap-y snap-mandatory">
         {scenes.map((scene, i) => (
           <Scene
             key={scene.id}

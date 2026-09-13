@@ -121,7 +121,7 @@ export function Scene({ scene, sceneIndex, theme, total }: Props) {
       data-scene
       data-ending={isEnding ? '' : undefined}
       aria-label={`Scene ${sceneIndex + 1} of ${total}`}
-      className="relative h-screen w-full overflow-hidden"
+      className="relative h-screen w-full overflow-hidden snap-start"
       style={{ background: theme.bg }}
     >
       {shouldMount ? (
