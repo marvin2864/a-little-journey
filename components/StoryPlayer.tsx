@@ -55,57 +55,61 @@ export function StoryPlayer() {
     [activeSceneIndex, jumpToScene, setPhase],
   )
 
-  // Manual scroll stepper: with auto-scroll off, each wheel/touch gesture
-  // advances exactly one scene (up or down) — even a small flick lands on the
-  // next section instead of stopping between scenes. A gesture is a burst of
-  // events; we step on the FIRST event of a new burst (gap > 200ms since last
-  // event) and ignore the rest until the burst ends + 900ms cooldown.
+  // Manual scroll stepper: with auto-scroll off, one scroll gesture — however
+  // big — advances exactly ONE scene. A gesture is a continuous stream of
+  // wheel/touch events; every event during a locked gesture only postpones the
+  // unlock (idle timer). Scrolling stops counting as the same gesture after
+  // 450ms of silence, so a long wheel drag = +1, a small flick = +1.
+  // Lock state lives in refs: `step`'s identity changes mid-burst when the
+  // active index updates, and the effect re-run must not re-arm a second step.
+  const wheelLockedRef = useRef(false)
+  const wheelIdleTimerRef = useRef(0)
+  const touchLockedRef = useRef(false)
   useEffect(() => {
     if (settings.autoScroll) return
 
-    let lastWheel = 0
-    let lastStep = 0
+    const GESTURE_IDLE_MS = 450
+
+    const armIdle = () => {
+      window.clearTimeout(wheelIdleTimerRef.current)
+      wheelIdleTimerRef.current = window.setTimeout(() => {
+        wheelLockedRef.current = false
+      }, GESTURE_IDLE_MS)
+    }
 
     const onWheel = (e: WheelEvent) => {
       e.preventDefault()
       if (Math.abs(e.deltaY) < 2) return
-
-      const now = Date.now()
-      const gap = now - lastWheel
-      lastWheel = now
-
-      // Step only if: new gesture (gap > 200ms) AND cooldown done (> 900ms)
-      if (gap > 200 && now - lastStep > 900) {
-        lastStep = now
-        step(e.deltaY > 0 ? 1 : -1)
+      if (wheelLockedRef.current) {
+        // Still the same gesture — absorb it, keep postponing the unlock.
+        armIdle()
+        return
       }
+      wheelLockedRef.current = true
+      armIdle()
+      step(e.deltaY > 0 ? 1 : -1)
     }
 
+    // Touch: one finger-down drag = one step. touchstart re-arms the lock,
+    // so lifting and swiping again is required for the next scene.
     let touchY = 0
-    let lastTouch = 0
     const onTouchStart = (e: TouchEvent) => {
       touchY = e.touches[0].clientY
-      lastTouch = Date.now()
+      touchLockedRef.current = false
     }
     const onTouchMove = (e: TouchEvent) => {
       e.preventDefault()
       const dy = touchY - e.touches[0].clientY
-      const now = Date.now()
-      const gap = now - lastTouch
-      lastTouch = now
-
-      if (Math.abs(dy) < 30) return
-      if (gap > 200 && now - lastStep > 900) {
-        lastStep = now
-        step(dy > 0 ? 1 : -1)
-        touchY = e.touches[0].clientY
-      }
+      if (touchLockedRef.current || Math.abs(dy) < 30) return
+      touchLockedRef.current = true
+      step(dy > 0 ? 1 : -1)
     }
 
     window.addEventListener('wheel', onWheel, { passive: false })
     window.addEventListener('touchstart', onTouchStart, { passive: true })
     window.addEventListener('touchmove', onTouchMove, { passive: false })
     return () => {
+      window.clearTimeout(wheelIdleTimerRef.current)
       window.removeEventListener('wheel', onWheel)
       window.removeEventListener('touchstart', onTouchStart)
       window.removeEventListener('touchmove', onTouchMove)
