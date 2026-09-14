@@ -9,7 +9,6 @@ import { Scene } from '@/components/Scene';
 import { EndingSection } from '@/components/EndingSection';
 import { ParticleCanvas } from '@/components/ParticleCanvas';
 import { SceneTransition } from '@/components/SceneTransition';
-import { ProgressIndicator } from '@/components/ProgressIndicator';
 import { SceneNav } from '@/components/SceneNav';
 import { FloatingControls } from '@/components/FloatingControls';
 import { CustomCursor } from '@/components/CustomCursor';
@@ -157,7 +156,6 @@ export function StoryPlayer() {
 
       <ParticleCanvas />
       <SceneTransition />
-      <ProgressIndicator />
       <SceneNav />
       <FloatingControls />
       <CustomCursor />
