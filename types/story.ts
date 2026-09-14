@@ -25,6 +25,8 @@ export type StoryScene = {
   text: string[]
   /** Visual transition into this scene. */
   transition?: TransitionType
+  /** How long the scene holds before auto-scroll advances, in seconds. */
+  duration: number
   /** Optional secondary track that plays partway through the scene (final scene handoff). */
   musicEndCue?: string
   /** Scene progress (0..1) at which the end cue should start. */

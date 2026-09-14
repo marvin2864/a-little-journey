@@ -112,7 +112,7 @@ export function StoryPlayer() {
       const lenis = lenisRef.current
       if (lenis) lenis.scrollTo(next, { duration: 2 })
       else next.scrollIntoView({ behavior: 'smooth', block: 'start' })
-    }, 8000)
+    }, scenes[activeSceneIndex]?.duration != null ? scenes[activeSceneIndex].duration * 1000 : 8000)
 
     const cancel = () => clearTimeout(timer)
     window.addEventListener('wheel', cancel, { passive: true })

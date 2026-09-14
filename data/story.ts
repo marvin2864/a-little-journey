@@ -21,6 +21,7 @@ export const scenes: StoryScene[] = [
     theme: 'morning',
     musicCue: cldAudio('The_1975_-_About_You'),
     transition: 'fade',
+    duration: 7,
     text: ['A little story…', 'Some journeys change you.'],
   },
 
@@ -31,6 +32,7 @@ export const scenes: StoryScene[] = [
     theme: 'morning',
     musicCue: cldAudio('Petit_Biscuit_-_Sunset_Lover'),
     transition: 'fade',
+    duration: 6,
     text: ['One ordinary morning…', 'He decided to go somewhere.'],
   },
 
@@ -41,6 +43,7 @@ export const scenes: StoryScene[] = [
     theme: 'morning',
     musicCue: cldAudio('Petit_Biscuit_-_Sunset_Lover'),
     transition: 'dissolve',
+    duration: 6,
     text: ['A flight. A promotion.', 'A chance to reward himself.'],
   },
 
@@ -51,6 +54,7 @@ export const scenes: StoryScene[] = [
     theme: 'journey',
     musicCue: cldAudio('The_Temper_Trap_-_Sweet_Disposition'),
     transition: 'dissolve',
+    duration: 7,
     text: ['Above the clouds,', 'a new chapter began.'],
   },
 
@@ -61,6 +65,7 @@ export const scenes: StoryScene[] = [
     theme: 'japan',
     musicCue: cldAudio('Yorushika_Itte_rasshai'),
     transition: 'dissolve',
+    duration: 8,
     text: ['A world he had only dreamed of.'],
   },
 
@@ -71,6 +76,7 @@ export const scenes: StoryScene[] = [
     theme: 'sakura',
     musicCue: cldAudio('Stephen_Sanchez_-_Until_I_Found_You'),
     transition: 'fade',
+    duration: 8,
     text: ['Then, something unexpected happened.', 'He met her.'],
   },
 
@@ -81,6 +87,7 @@ export const scenes: StoryScene[] = [
     theme: 'sakura',
     musicCue: cldAudio('Lauv_-_I_Like_Me_Better'),
     transition: 'dissolve',
+    duration: 6,
     text: ['A name. A smile.', 'One follow that started everything.'],
   },
 
@@ -91,6 +98,7 @@ export const scenes: StoryScene[] = [
     theme: 'sakura',
     musicCue: cldAudio('Lauv_-_I_Like_Me_Better'),
     transition: 'dissolve',
+    duration: 7,
     text: ['Days turned into moments', 'neither of them wanted to end.'],
   },
 
@@ -101,6 +109,7 @@ export const scenes: StoryScene[] = [
     theme: 'snow',
     musicCue: cldAudio('beabadoobee_-_Glue_Song'),
     transition: 'pink-to-blue',
+    duration: 8,
     text: ['Somewhere between laughter and snow…', 'they became a little closer.'],
   },
 
@@ -111,6 +120,7 @@ export const scenes: StoryScene[] = [
     theme: 'night',
     musicCue: cldAudio('The_1975_-_About_You'),
     transition: 'blue-to-navy',
+    duration: 10,
     text: ['In a city full of people…', '…it felt like there were only two.'],
   },
 
@@ -121,6 +131,7 @@ export const scenes: StoryScene[] = [
     theme: 'night',
     musicCue: cldAudio('Multo_-_Cup_of_Joe'),
     transition: 'fade',
+    duration: 8,
     text: ['But every journey has a moment', 'when you realize it has to end.'],
   },
 
@@ -131,6 +142,7 @@ export const scenes: StoryScene[] = [
     theme: 'sakura',
     musicCue: cldAudio('Goo_Goo_Dolls_-_Iris'),
     transition: 'dark-to-cream',
+    duration: 10,
     text: ['Before he went home…', 'he went back to where it all began.'],
   },
 
@@ -145,6 +157,7 @@ export const scenes: StoryScene[] = [
     musicEndFadeIn: 1800,
     musicEndFadeOut: 1500,
     transition: 'dark-to-cream',
+    duration: 9,
     text: [
       'Some journeys end.',
       'Some memories stay.',
