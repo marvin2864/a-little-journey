@@ -1,12 +1,12 @@
-'use client'
+'use client';
 
-import { useStory } from '@/context/StoryContext'
+import { useStory } from '@/context/StoryContext';
 
 /** Floating controls: music toggle + auto-scroll toggle (DESIGN.md §11–12). */
 export function FloatingControls() {
-  const { settings, updateSettings, toggleMute, isMuted } = useStory()
+  const { settings, updateSettings, toggleMute, isMuted } = useStory();
 
-  const musicOn = settings.sound && !isMuted
+  const musicOn = settings.sound && !isMuted;
 
   return (
     <div className="fixed bottom-5 right-4 z-50 flex flex-col gap-2 md:bottom-6 md:right-6">
@@ -20,14 +20,38 @@ export function FloatingControls() {
         aria-pressed={!musicOn}
       >
         {musicOn ? (
-          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" aria-hidden="true">
-            <path d="M9 18V5l12-2v13" strokeLinecap="round" strokeLinejoin="round" />
+          <svg
+            width="16"
+            height="16"
+            viewBox="0 0 24 24"
+            fill="none"
+            stroke="currentColor"
+            strokeWidth="1.5"
+            aria-hidden="true"
+          >
+            <path
+              d="M9 18V5l12-2v13"
+              strokeLinecap="round"
+              strokeLinejoin="round"
+            />
             <circle cx="6" cy="18" r="3" />
             <circle cx="18" cy="16" r="3" />
           </svg>
         ) : (
-          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" aria-hidden="true">
-            <path d="M9 18V5l12-2v13M3 3l18 18" strokeLinecap="round" strokeLinejoin="round" />
+          <svg
+            width="16"
+            height="16"
+            viewBox="0 0 24 24"
+            fill="none"
+            stroke="currentColor"
+            strokeWidth="1.5"
+            aria-hidden="true"
+          >
+            <path
+              d="M9 18V5l12-2v13M3 3l18 18"
+              strokeLinecap="round"
+              strokeLinejoin="round"
+            />
             <circle cx="6" cy="18" r="3" />
             <circle cx="18" cy="16" r="3" />
           </svg>
@@ -44,20 +68,34 @@ export function FloatingControls() {
             : 'border-[var(--scene-text,#faf5eb)]/20 bg-black/30 text-[var(--scene-text,#faf5eb)]/70 hover:border-[var(--scene-text,#faf5eb)]/40'
         }`}
         aria-pressed={settings.autoScroll}
-        aria-label={settings.autoScroll ? 'Pause auto story' : 'Start auto story'}
+        aria-label={
+          settings.autoScroll ? 'Pause auto story' : 'Start auto story'
+        }
         title={settings.autoScroll ? 'AUTO STORY ●' : 'Auto story off'}
       >
         {settings.autoScroll ? (
-          <svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
+          <svg
+            width="14"
+            height="14"
+            viewBox="0 0 24 24"
+            fill="currentColor"
+            aria-hidden="true"
+          >
             <rect x="6" y="4" width="4" height="16" rx="1" />
             <rect x="14" y="4" width="4" height="16" rx="1" />
           </svg>
         ) : (
-          <svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
+          <svg
+            width="14"
+            height="14"
+            viewBox="0 0 24 24"
+            fill="currentColor"
+            aria-hidden="true"
+          >
             <path d="M8 5v14l11-7z" />
           </svg>
         )}
       </button>
     </div>
-  )
+  );
 }

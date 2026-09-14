@@ -1,4 +1,4 @@
-@import "tailwindcss";
+@import 'tailwindcss';
 
 :root {
   --scene-bg: #0a0a14;
@@ -15,16 +15,14 @@ html {
   scroll-snap-type: y mandatory;
 }
 
-/* Auto-scroll mode drives scrolling with Lenis; native snap would fight its
-   per-frame programmatic scroll, so it is disabled there. */
-html.no-snap {
-  scroll-snap-type: none;
-}
-
 body {
   margin: 0;
   padding: 0;
-  font-family: var(--font-acthirey), system-ui, -apple-system, sans-serif;
+  font-family:
+    var(--font-acthirey),
+    system-ui,
+    -apple-system,
+    sans-serif;
   background: #07070f;
   color: #faf5eb;
   overflow-x: hidden;
@@ -32,7 +30,10 @@ body {
   -moz-osx-font-smoothing: grayscale;
 }
 
-/* Film grain overlay */
+/* Film grain overlay — intro/loading only. The grain keyframes translate this
+   full-viewport layer by large percentages, so inside the story it reads as a
+   pale rectangle bouncing around over the video. `in-story` (set by
+   StoryPlayer while the film plays) removes it. */
 body::after {
   content: '';
   position: fixed;
@@ -47,22 +48,48 @@ body::after {
   animation: grain 8s steps(10) infinite;
 }
 
+body.in-story::after {
+  display: none;
+}
+
 @keyframes grain {
-  0%, 100% { transform: translate(0, 0); }
-  10% { transform: translate(-5%, -10%); }
-  20% { transform: translate(-15%, 5%); }
-  30% { transform: translate(7%, -25%); }
-  40% { transform: translate(-5%, 25%); }
-  50% { transform: translate(-15%, 10%); }
-  60% { transform: translate(15%, 0%); }
-  70% { transform: translate(0%, 15%); }
-  80% { transform: translate(3%, 35%); }
-  90% { transform: translate(-10%, 10%); }
+  0%,
+  100% {
+    transform: translate(0, 0);
+  }
+  10% {
+    transform: translate(-5%, -10%);
+  }
+  20% {
+    transform: translate(-15%, 5%);
+  }
+  30% {
+    transform: translate(7%, -25%);
+  }
+  40% {
+    transform: translate(-5%, 25%);
+  }
+  50% {
+    transform: translate(-15%, 10%);
+  }
+  60% {
+    transform: translate(15%, 0%);
+  }
+  70% {
+    transform: translate(0%, 15%);
+  }
+  80% {
+    transform: translate(3%, 35%);
+  }
+  90% {
+    transform: translate(-10%, 10%);
+  }
 }
 
 /* Logo breathing animation */
 @keyframes breathe {
-  0%, 100% {
+  0%,
+  100% {
     transform: scale(1);
     opacity: 0.9;
   }
@@ -90,23 +117,10 @@ body::after {
   animation: loading-bar 1.5s ease-in-out infinite;
 }
 
-/* Scene-change wash */
-@keyframes wash {
-  from {
-    opacity: 1;
-  }
-  to {
-    opacity: 0;
-  }
-}
-
-.animate-wash {
-  animation: wash 0.9s ease-out forwards;
-}
-
 /* Floating particles animation */
 @keyframes float {
-  0%, 100% {
+  0%,
+  100% {
     transform: translateY(0) translateX(0);
     opacity: 0.4;
   }
@@ -165,6 +179,10 @@ body::after {
     animation-duration: 0.01ms !important;
     animation-iteration-count: 1 !important;
     transition-duration: 0.01ms !important;
+  }
+
+  html {
+    scroll-behavior: auto;
   }
 
   body::after {

@@ -1,30 +1,30 @@
-'use client'
+'use client';
 
-import { useEffect } from 'react'
-import Image from 'next/image'
-import { useStory } from '@/context/StoryContext'
-import { scenes, LOGO } from '@/data/story'
+import { useEffect } from 'react';
+import Image from 'next/image';
+import { useStory } from '@/context/StoryContext';
+import { scenes, LOGO } from '@/data/story';
 
 export function IntroScreen() {
-  const { settings, updateSettings, enterStory } = useStory()
+  const { settings, updateSettings, enterStory } = useStory();
 
   // Warm up the first scene video over the network so ENTER feels instant.
   // <link rel=preload as=video> isn't a supported combo (console warning);
   // a paused, muted <video> preload does the job.
   useEffect(() => {
-    const warm = document.createElement('video')
-    warm.src = scenes[0].video
-    warm.preload = 'auto'
-    warm.muted = true
-    warm.playsInline = true
-    warm.style.display = 'none'
-    document.body.appendChild(warm)
+    const warm = document.createElement('video');
+    warm.src = scenes[0].video;
+    warm.preload = 'auto';
+    warm.muted = true;
+    warm.playsInline = true;
+    warm.style.display = 'none';
+    document.body.appendChild(warm);
     return () => {
-      warm.removeAttribute('src')
-      warm.load()
-      warm.remove()
-    }
-  }, [])
+      warm.removeAttribute('src');
+      warm.load();
+      warm.remove();
+    };
+  }, []);
 
   return (
     <main className="fixed inset-0 z-50 flex flex-col items-center justify-center overflow-hidden bg-[#07070f]">
@@ -60,28 +60,24 @@ export function IntroScreen() {
         {/* One line on md+; stacks on phones — 3 labeled cards cannot fit 390px
             without horizontal overflow. */}
         <div className="flex w-full flex-col items-center gap-3 md:w-auto md:flex-row md:gap-4">
-        <SettingToggle
-          label="Sound"
-          value={settings.sound ? 'ON' : 'OFF'}
-          onToggle={() =>
-            updateSettings({ sound: !settings.sound })
-          }
-        />
-        <SettingToggle
-          label="Motion"
-          value={settings.motion ? 'ON' : 'REDUCED'}
-          offValue="REDUCED"
-          onToggle={() =>
-            updateSettings({ motion: !settings.motion })
-          }
-        />
-        <SettingToggle
-          label="Auto Scroll"
-          value={settings.autoScroll ? 'ON' : 'OFF'}
-          onToggle={() =>
-            updateSettings({ autoScroll: !settings.autoScroll })
-          }
-        />
+          <SettingToggle
+            label="Sound"
+            value={settings.sound ? 'ON' : 'OFF'}
+            onToggle={() => updateSettings({ sound: !settings.sound })}
+          />
+          <SettingToggle
+            label="Motion"
+            value={settings.motion ? 'ON' : 'REDUCED'}
+            offValue="REDUCED"
+            onToggle={() => updateSettings({ motion: !settings.motion })}
+          />
+          <SettingToggle
+            label="Auto Scroll"
+            value={settings.autoScroll ? 'ON' : 'OFF'}
+            onToggle={() =>
+              updateSettings({ autoScroll: !settings.autoScroll })
+            }
+          />
         </div>
       </fieldset>
 
@@ -95,7 +91,7 @@ export function IntroScreen() {
         ENTER THE STORY
       </button>
     </main>
-  )
+  );
 }
 
 /** Row with a real switch — reads as a control, not as a status line. */
@@ -105,12 +101,12 @@ function SettingToggle({
   onToggle,
   offValue = 'OFF',
 }: {
-  label: string
-  value: string
-  onToggle: () => void
-  offValue?: string
+  label: string;
+  value: string;
+  onToggle: () => void;
+  offValue?: string;
 }) {
-  const on = value !== offValue
+  const on = value !== offValue;
   return (
     <button
       type="button"
@@ -147,5 +143,5 @@ function SettingToggle({
         </span>
       </span>
     </button>
-  )
+  );
 }

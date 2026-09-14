@@ -8,20 +8,24 @@
 **Name:** A Little Journey
 
 **Core message:**
+
 > He went to Japan to reward himself. He didn't know the journey would become the memory.
 
 Alternative:
+
 > Sometimes, the best part of a journey is who you meet along the way.
 
 ### Experience category
 
 The site should feel like:
+
 - interactive short film
 - digital storybook
 - cinematic experience
 - premium interactive art website
 
 It must not feel like:
+
 - dashboard
 - portfolio template
 - video gallery
@@ -123,6 +127,7 @@ assets/
 ```
 
 Do not:
+
 - make mock videos
 - use external video URLs when local assets exist
 - duplicate videos
@@ -142,6 +147,7 @@ Before UI implementation, inventory the actual directory and map real files to t
 ### Format preference
 
 If equivalent files exist:
+
 1. WebM
 2. MP4
 3. other browser-compatible format
@@ -164,15 +170,15 @@ Suggested type:
 
 ```ts
 export type StoryScene = {
-  id: string
-  title: string
-  subtitle?: string
-  video: string
-  poster?: string
-  theme: StoryTheme
-  transition?: TransitionType
-  musicCue?: string
-}
+  id: string;
+  title: string;
+  subtitle?: string;
+  video: string;
+  poster?: string;
+  theme: StoryTheme;
+  transition?: TransitionType;
+  musicCue?: string;
+};
 ```
 
 Suggested scene sequence:
@@ -198,9 +204,11 @@ Do not hardcode this sequence into UI components.
 On first visit, show a cinematic intro instead of the main story.
 
 Background:
+
 - deep navy / almost black
 
 Center:
+
 - existing logo/icon
 - subtle floating/breathing animation
 - tiny particles
@@ -223,6 +231,7 @@ Primary action:
 > ENTER THE STORY
 
 Experience settings:
+
 - Sound: ON/OFF
 - Motion: ON/REDUCED
 - Auto Scroll: ON/OFF
@@ -233,12 +242,14 @@ Do not request microphone, camera, location, notifications, etc.
 ### Browser audio policy
 
 The Enter action is the explicit user interaction that unlocks:
+
 - AudioContext
 - soundtrack
 - cinematic animation
 - story playback
 
 If autoplay is blocked, provide an elegant fallback:
+
 > Tap anywhere to begin the soundtrack.
 
 ---
@@ -246,12 +257,14 @@ If autoplay is blocked, provide an elegant fallback:
 ## 7. Loading experience
 
 Show:
+
 - animated small logo
 - progress indicator
 - "Preparing your journey..."
 - percentage
 
 Preload only what is needed to enter the experience:
+
 - first video
 - required poster
 - initial audio
@@ -264,15 +277,18 @@ Do not make the user wait for the entire film.
 ## 8. Hero / first scene
 
 Use a cinematic full-screen presentation:
+
 - `100vw`
 - `100vh`
 - preserve video aspect ratio
 - gradient overlay for readability
 
 Initial text:
+
 > One ordinary morning...
 
 Then:
+
 > He decided to go somewhere.
 
 Text should reveal with fade + slight upward movement.
@@ -286,6 +302,7 @@ Never flood the screen with text.
 The video is the core storytelling medium.
 
 Each scene owns:
+
 - video
 - title
 - subtitle
@@ -298,6 +315,7 @@ The scenes must feel like one film, not isolated webpage sections.
 ### Cinematic scroll
 
 Scroll may drive:
+
 - scene changes
 - text reveal
 - background movement
@@ -316,72 +334,89 @@ Keep scrolling smooth and avoid heavy work on every frame.
 ### Sakura
 
 Palette:
+
 - soft pink
 - warm cream
 
 Atmosphere:
+
 - slowly falling cherry blossom petals
 - warm ambient light
 - soft depth
 
 Copy:
+
 > Then, something unexpected happened.
 
 Then:
+
 > He met her.
 
 ### Snow
 
 Transition:
+
 - pink → cool blue
 
 Atmosphere:
+
 - snow particles
 - cool blue gradient
 - white glow
 - soft blur
 
 Copy:
+
 > Somewhere between laughter and snow...
 
 Then:
+
 > they became a little closer.
 
 ### Night city
 
 Background:
+
 - dark navy
 
 Atmosphere:
+
 - glowing city lights
 - bokeh
 - subtle particles
 - parallax buildings
 
 When hand-holding appears:
+
 - slightly increase ambient glow
 
 Copy:
+
 > In a city full of people...
 
 Then:
+
 > ...it felt like there were only two.
 
 ### Ending
 
 Slow everything down:
+
 - reduce animation intensity
 - fade music
 - return to warm cream
 - return to cherry blossom
 
 Copy:
+
 > Before he went home...
 
 Then:
+
 > he went back to where it all began.
 
 After the photo:
+
 > Some journeys end.
 
 Pause.
@@ -403,6 +438,7 @@ Pause.
 Auto Scroll is optional.
 
 When enabled:
+
 - after a scene/video milestone, smoothly advance
 - user can always take control
 - manual scroll pauses auto-scroll
@@ -429,6 +465,7 @@ public/assets/m/
 ```
 
 Before implementation:
+
 - Inspect the actual files inside `public/assets/m/`.
 - Do not invent filenames.
 - Map the actual MP3 filenames to the soundtrack roles below.
@@ -438,19 +475,19 @@ Before implementation:
 
 ### Soundtrack Map
 
-| Scene | Emotional Direction | Soundtrack |
-|---|---|---|
-| Opening | mysterious, dreamy | About You — The 1975 |
-| Morning + Ticket | hopeful | Sunset Lover — Petit Biscuit |
-| The Journey / Airplane | freedom | Sweet Disposition — The Temper Trap |
-| Japan | wonder | Itte rasshai — Yorushika |
-| First Meeting | romantic | Until I Found You — Stephen Sanchez |
-| Instagram / Chat | cute, intimate | I Like Me Better — Lauv |
-| Snow | happy romance | Glue Song — beabadoobee |
-| Night City | dreamy | About You — The 1975 |
-| Before Goodbye | nostalgic | Multo — Cup of Joe |
-| Final Photo | emotional climax | Iris — The Goo Goo Dolls |
-| Fade to White | emotional | Turning Page — Sleeping At Last |
+| Scene                  | Emotional Direction | Soundtrack                          |
+| ---------------------- | ------------------- | ----------------------------------- |
+| Opening                | mysterious, dreamy  | About You — The 1975                |
+| Morning + Ticket       | hopeful             | Sunset Lover — Petit Biscuit        |
+| The Journey / Airplane | freedom             | Sweet Disposition — The Temper Trap |
+| Japan                  | wonder              | Itte rasshai — Yorushika            |
+| First Meeting          | romantic            | Until I Found You — Stephen Sanchez |
+| Instagram / Chat       | cute, intimate      | I Like Me Better — Lauv             |
+| Snow                   | happy romance       | Glue Song — beabadoobee             |
+| Night City             | dreamy              | About You — The 1975                |
+| Before Goodbye         | nostalgic           | Multo — Cup of Joe                  |
+| Final Photo            | emotional climax    | Iris — The Goo Goo Dolls            |
+| Fade to White          | emotional           | Turning Page — Sleeping At Last     |
 
 ### Emotional Music Arc
 
@@ -684,18 +721,18 @@ Extend the scene configuration when necessary:
 
 ```ts
 type StoryScene = {
-  id: string
-  title: string
-  subtitle?: string
-  video: string
-  poster?: string
-  theme: StoryTheme
-  transition?: TransitionType
-  musicCue?: string
-  musicStart?: number
-  musicFadeIn?: number
-  musicFadeOut?: number
-}
+  id: string;
+  title: string;
+  subtitle?: string;
+  video: string;
+  poster?: string;
+  theme: StoryTheme;
+  transition?: TransitionType;
+  musicCue?: string;
+  musicStart?: number;
+  musicFadeIn?: number;
+  musicFadeOut?: number;
+};
 ```
 
 Music configuration must remain separate from UI components.
@@ -840,6 +877,7 @@ and then create the mapping based on the actual files present.
 ## 13. Ambient 3D / particles
 
 Use subtle:
+
 - petals
 - stars
 - snow
@@ -850,6 +888,7 @@ Use subtle:
 Desktop can use more particles.
 
 Mobile must reduce:
+
 - particle count
 - blur layers
 - parallax
@@ -858,6 +897,7 @@ Mobile must reduce:
 Respect `prefers-reduced-motion`.
 
 Reduced motion:
+
 - no excessive particles
 - no camera movement
 - no parallax
@@ -870,14 +910,17 @@ Reduced motion:
 Minimal composition.
 
 Background:
+
 - soft cream / sakura gradient
 
 Show small couple image if available.
 
 Copy:
+
 > Thank you for being part of the story.
 
 Actions:
+
 - Replay the journey
 - Sound ON
 - Share
@@ -903,9 +946,11 @@ Use minimal floating navigation:
 ```
 
 Desktop:
+
 - small side navigation
 
 Mobile:
+
 - bottom progress indicator
 
 ---
@@ -921,6 +966,7 @@ Use a cinematic progress system:
 or a vertical progress line.
 
 When scene changes:
+
 - progress updates
 - scene name updates
 
@@ -929,13 +975,16 @@ When scene changes:
 ## 17. Cursor and micro-interactions
 
 Desktop:
+
 - subtle glowing-dot cursor
 - expands slightly over interactive elements
 
 Mobile:
+
 - native cursor
 
 Micro-interactions:
+
 - light magnetic buttons
 - hover scale
 - text reveal
@@ -947,6 +996,7 @@ Micro-interactions:
 - depth movement
 
 Avoid:
+
 - bounce-heavy motion
 - neon gaming effects
 - huge cursors
@@ -957,6 +1007,7 @@ Avoid:
 ## 18. Responsive targets
 
 Must look intentional at:
+
 - 1920×1080
 - 1440×900
 - tablet
@@ -965,6 +1016,7 @@ Must look intentional at:
 - 430×932
 
 Mobile:
+
 - fullscreen video
 - smaller typography
 - fewer particles
@@ -980,6 +1032,7 @@ Mobile:
 Video is likely the largest payload.
 
 Implement:
+
 - poster-first rendering
 - preload only first scene
 - lazy-load upcoming scene
@@ -1003,6 +1056,7 @@ Never make the browser download every video on initial page load.
 ## 20. Accessibility
 
 Required:
+
 - reduced motion
 - keyboard navigation
 - visible focus states
@@ -1026,10 +1080,12 @@ Description:
 **A small journey, an unexpected meeting, and a memory that stayed.**
 
 Open Graph:
+
 - `/public/assets/i/opengraph.png`
 - intended landscape artwork: 1200×630 when the asset supports that use
 
 Also configure:
+
 - Twitter card metadata
 - favicon
 - apple-touch-icon when dimensions are suitable
@@ -1058,12 +1114,14 @@ Never interrupt the main story.
 Before declaring the work complete:
 
 ### Browser / device
+
 - Chrome desktop
 - Safari
 - mobile Chrome
 - iPhone Safari when available
 
 ### Functional
+
 - no console errors
 - no horizontal overflow
 - no layout shift
@@ -1078,6 +1136,7 @@ Before declaring the work complete:
 - share works/falls back correctly
 
 ### Creative
+
 The final reaction should be:
 
 > "Wow, this is not a normal website."
@@ -1093,6 +1152,7 @@ and after completion:
 Build the complete production-ready experience, not a mockup.
 
 If an asset is genuinely missing:
+
 - use a clearly structured placeholder
 - keep the placeholder isolated behind the same asset/data interface
 - make replacement require no architectural rewrite

@@ -85,6 +85,7 @@ If the existing project already has a sound architecture, adapt rather than rewr
 ## Development workflow
 
 ### Phase 1 — Discovery
+
 - Inspect repository structure.
 - Inspect `assets/v/` and `assets/i/`.
 - Identify video formats and image dimensions where practical.
@@ -92,12 +93,15 @@ If the existing project already has a sound architecture, adapt rather than rewr
 - Record assumptions in `data/story.ts` or a short development note.
 
 ### Phase 2 — Foundation
+
 - Establish global typography, color tokens, spacing, responsive behavior.
 - Implement intro/settings/loading states.
 - Establish a single story state machine/controller.
 
 ### Phase 3 — Story engine
+
 Implement:
+
 - scene lifecycle
 - video loading/play/pause/unload
 - scene transitions
@@ -109,7 +113,9 @@ Implement:
 - mobile optimization
 
 ### Phase 4 — Art direction
+
 Tune each story theme:
+
 - warm morning
 - sky/journey
 - Japan
@@ -119,7 +125,9 @@ Tune each story theme:
 - goodbye / warm cream ending
 
 ### Phase 5 — QA
+
 Test:
+
 - no horizontal overflow
 - no console errors
 - no broken media
@@ -148,6 +156,7 @@ Test:
 Use public URLs only when the local project exposes the corresponding file.
 
 Expected public paths:
+
 - `/assets/v/<filename>`
 - `/assets/i/logo.png`
 - `/assets/i/opengraph.png`
@@ -159,6 +168,7 @@ If the source asset directory is outside `public/`, configure the app so the bro
 Read `DESIGN.md` before making substantial visual decisions.
 
 When there is a conflict:
+
 1. explicit latest user instruction
 2. `CLAUDE.md`
 3. `DESIGN.md`

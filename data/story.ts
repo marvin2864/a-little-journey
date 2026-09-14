@@ -1,9 +1,5 @@
-import type {
-  SceneThemeConfig,
-  StoryScene,
-  StoryTheme,
-} from '@/types/story'
-import { cldVideo, cldAudio, cldImage } from '@/lib/cloudinary'
+import type { SceneThemeConfig, StoryScene, StoryTheme } from '@/types/story';
+import { cldVideo, cldAudio, cldImage } from '@/lib/cloudinary';
 
 /**
  * 13-scene cinematic story sequence.
@@ -110,7 +106,10 @@ export const scenes: StoryScene[] = [
     musicCue: cldAudio('beabadoobee_-_Glue_Song'),
     transition: 'pink-to-blue',
     duration: 8,
-    text: ['Somewhere between laughter and snow…', 'they became a little closer.'],
+    text: [
+      'Somewhere between laughter and snow…',
+      'they became a little closer.',
+    ],
   },
 
   // 10 — Jalan Gandengan Malam
@@ -153,7 +152,7 @@ export const scenes: StoryScene[] = [
     theme: 'ending',
     musicCue: cldAudio('Goo_Goo_Dolls_-_Iris'),
     musicEndCue: cldAudio('Turning_Page_-_Sleeping_At_Last'),
-    musicEndAt: 0.70,
+    musicEndAt: 0.7,
     musicEndFadeIn: 1800,
     musicEndFadeOut: 1500,
     transition: 'dark-to-cream',
@@ -165,7 +164,7 @@ export const scenes: StoryScene[] = [
       '…become part of the journey.',
     ],
   },
-]
+];
 
 /** Atmosphere per theme. Colors are used for backdrop + text. */
 export const themeConfigs: Record<StoryTheme, SceneThemeConfig> = {
@@ -225,7 +224,7 @@ export const themeConfigs: Record<StoryTheme, SceneThemeConfig> = {
     particle: 'petals',
     particleColor: '#f6b9c6',
   },
-}
+};
 
 /** Minimal floating navigation chapters (DESIGN.md §15). */
 export const chapters: { label: string; sceneIndex: number }[] = [
@@ -235,7 +234,7 @@ export const chapters: { label: string; sceneIndex: number }[] = [
   { label: 'Snow', sceneIndex: 8 },
   { label: 'Night', sceneIndex: 9 },
   { label: 'Goodbye', sceneIndex: 11 },
-]
+];
 
-export const LOGO = cldImage('logo')
-export const OPENGRAPH = cldImage('opengraph')
+export const LOGO = cldImage('logo');
+export const OPENGRAPH = cldImage('opengraph');

@@ -1,38 +1,36 @@
-'use client'
+'use client';
 
-import { useEffect, useState } from 'react'
-import { useStory } from '@/context/StoryContext'
+import { useEffect, useState } from 'react';
+import { useStory } from '@/context/StoryContext';
 
 /**
  * Fallback overlay shown when browser blocks audio playback.
  * "Tap anywhere to begin the soundtrack" — per DESIGN.md §6.
  */
 export function AudioBlockedOverlay() {
-  const { audioManager } = useStory()
-  const [show, setShow] = useState(false)
+  const { audioManager } = useStory();
+  const [show, setShow] = useState(false);
 
   useEffect(() => {
-    audioManager.onBlocked = () => setShow(true)
-    return () => {
-      audioManager.onBlocked = null
-    }
-  }, [audioManager])
+    // Subscribe (don't assign) — the manager is shared, not owned here.
+    return audioManager.onBlocked(() => setShow(true));
+  }, [audioManager]);
 
-  if (!show) return null
+  if (!show) return null;
 
   const handleDismiss = () => {
-    audioManager.unlock()
-    audioManager.resume()
-    setShow(false)
-  }
+    audioManager.unlock();
+    audioManager.resume();
+    setShow(false);
+  };
 
   return (
     <div
       onClick={handleDismiss}
       onKeyDown={(e) => {
         if (e.key === 'Enter' || e.key === ' ') {
-          e.preventDefault()
-          handleDismiss()
+          e.preventDefault();
+          handleDismiss();
         }
       }}
       role="button"
@@ -44,5 +42,5 @@ export function AudioBlockedOverlay() {
         Tap anywhere to begin the soundtrack
       </p>
     </div>
-  )
+  );
 }

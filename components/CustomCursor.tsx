@@ -1,7 +1,8 @@
-'use client'
+'use client';
 
-import { useEffect, useRef, useState } from 'react'
-import { useReducedMotion } from '@/hooks/useReducedMotion'
+import { useEffect, useRef } from 'react';
+import { useReducedMotion } from '@/hooks/useReducedMotion';
+import { useMediaQuery } from '@/hooks/useMediaQuery';
 
 /**
  * Subtle glowing-dot cursor (DESIGN.md §17). Desktop fine-pointer only.
@@ -9,47 +10,47 @@ import { useReducedMotion } from '@/hooks/useReducedMotion'
  * toggles via a class when hovering [data-interactive] elements.
  */
 export function CustomCursor() {
-  const ref = useRef<HTMLDivElement>(null)
-  const reducedMotion = useReducedMotion()
-  const [enabled, setEnabled] = useState(false)
+  const ref = useRef<HTMLDivElement>(null);
+  const reducedMotion = useReducedMotion();
+  const finePointer = useMediaQuery('(pointer: fine)');
 
   useEffect(() => {
-    setEnabled(window.matchMedia('(pointer: fine)').matches)
-    if (!window.matchMedia('(pointer: fine)').matches || reducedMotion) return
+    if (!finePointer || reducedMotion) return;
 
-    let x = window.innerWidth / 2
-    let y = window.innerHeight / 2
-    let cx = x
-    let cy = y
-    let rafId = 0
+    let x = window.innerWidth / 2;
+    let y = window.innerHeight / 2;
+    let cx = x;
+    let cy = y;
+    let rafId = 0;
 
     const onMove = (e: MouseEvent) => {
-      x = e.clientX
-      y = e.clientY
-      const target = e.target as HTMLElement | null
-      const interactive = target?.closest('[data-interactive], a, button')
-      ref.current?.classList.toggle('h-6', Boolean(interactive))
-      ref.current?.classList.toggle('w-6', Boolean(interactive))
-    }
+      x = e.clientX;
+      y = e.clientY;
+      const target = e.target as HTMLElement | null;
+      const interactive = target?.closest('[data-interactive], a, button');
+      ref.current?.classList.toggle('h-6', Boolean(interactive));
+      ref.current?.classList.toggle('w-6', Boolean(interactive));
+    };
 
     const tick = () => {
-      cx += (x - cx) * 0.15
-      cy += (y - cy) * 0.15
-      const el = ref.current
-      if (el) el.style.transform = `translate3d(${cx}px, ${cy}px, 0) translate(-50%, -50%)`
-      rafId = requestAnimationFrame(tick)
-    }
+      cx += (x - cx) * 0.15;
+      cy += (y - cy) * 0.15;
+      const el = ref.current;
+      if (el)
+        el.style.transform = `translate3d(${cx}px, ${cy}px, 0) translate(-50%, -50%)`;
+      rafId = requestAnimationFrame(tick);
+    };
 
-    window.addEventListener('mousemove', onMove, { passive: true })
-    rafId = requestAnimationFrame(tick)
+    window.addEventListener('mousemove', onMove, { passive: true });
+    rafId = requestAnimationFrame(tick);
 
     return () => {
-      window.removeEventListener('mousemove', onMove)
-      cancelAnimationFrame(rafId)
-    }
-  }, [reducedMotion])
+      window.removeEventListener('mousemove', onMove);
+      cancelAnimationFrame(rafId);
+    };
+  }, [finePointer, reducedMotion]);
 
-  if (!enabled || reducedMotion) return null
+  if (!finePointer || reducedMotion) return null;
 
   return (
     <div
@@ -58,5 +59,5 @@ export function CustomCursor() {
       style={{ boxShadow: '0 0 12px rgba(255,255,255,0.5)' }}
       aria-hidden="true"
     />
-  )
+  );
 }

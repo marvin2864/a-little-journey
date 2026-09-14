@@ -34,6 +34,7 @@ Use this skill for story-engine, animation, interaction, and visual work.
 Target transition duration: roughly 0.8–1.5 seconds.
 
 Suggested moods:
+
 - morning → ticket: soft white
 - ticket → Japan: airy/cloud-like
 - Japan → sakura: petal/warm transition

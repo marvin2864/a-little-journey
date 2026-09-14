@@ -10,6 +10,7 @@ Use after major UI/story changes and before release.
 ## Video
 
 Check:
+
 - first scene is the only eagerly loaded scene
 - future scenes are lazy
 - distant videos pause/unload safely
@@ -21,6 +22,7 @@ Check:
 ## Motion
 
 Check:
+
 - `prefers-reduced-motion`
 - user Motion setting
 - no animation loops when offscreen
@@ -31,6 +33,7 @@ Check:
 ## Accessibility
 
 Check:
+
 - keyboard access
 - visible focus
 - ARIA labels
@@ -42,6 +45,7 @@ Check:
 ## Responsive
 
 Check:
+
 - 390×844
 - 393×873
 - 430×932
