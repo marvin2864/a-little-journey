@@ -1,6 +1,6 @@
 'use client'
 
-import { useEffect, useRef } from 'react'
+import { useCallback, useEffect, useRef } from 'react'
 import { useStory } from '@/context/StoryContext'
 import { useScrollProgress } from '@/hooks/useScrollProgress'
 import { useReducedMotion } from '@/hooks/useReducedMotion'
@@ -29,6 +29,32 @@ export function StoryPlayer() {
 
   useScrollProgress(rootRef)
 
+  // One deliberate advance past FINAL_SHOT (scene 13) rolls to the closing
+  // screen — beat 14 of the film. The FINAL_SHOT video is always seen first:
+  // the ending never fires from scroll position or a timer, only from a
+  // down-move while the last scene is active. A cooldown keeps a held key or
+  // fast trackpad flicks from skipping the final video.
+  const endedRef = useRef(false)
+  const edgeCooldown = useRef(false)
+  const step = useCallback(
+    (dir: 1 | -1) => {
+      const target = activeSceneIndex + dir
+      if (target < 0) return
+      if (target >= scenes.length) {
+        if (endedRef.current || edgeCooldown.current) return
+        edgeCooldown.current = true
+        window.setTimeout(() => {
+          edgeCooldown.current = false
+        }, 800)
+        endedRef.current = true
+        setPhase('ending')
+        return
+      }
+      jumpToScene(target)
+    },
+    [activeSceneIndex, jumpToScene, setPhase],
+  )
+
   // Manual scroll stepper: with auto-scroll off, each wheel/touch gesture
   // advances exactly one scene (up or down) — even a small flick lands on the
   // next section instead of stopping between scenes. Native scroll is taken
@@ -40,7 +66,7 @@ export function StoryPlayer() {
     const move = (dir: 1 | -1) => {
       if (locked) return
       locked = true
-      jumpToScene(activeSceneIndex + dir)
+      step(dir)
       window.setTimeout(() => {
         locked = false
       }, 900)
@@ -72,7 +98,7 @@ export function StoryPlayer() {
       window.removeEventListener('touchstart', onTouchStart)
       window.removeEventListener('touchmove', onTouchMove)
     }
-  }, [settings.autoScroll, activeSceneIndex, jumpToScene])
+  }, [settings.autoScroll, step])
 
   // Auto-scroll: advance after each scene settles. Any manual wheel/touch
   // input cancels the pending advance (user is never trapped, DESIGN.md §11).
@@ -114,38 +140,15 @@ export function StoryPlayer() {
       }
       if (e.key === 'ArrowDown' || e.key === 'PageDown') {
         e.preventDefault()
-        jumpToScene(Math.min(activeSceneIndex + 1, scenes.length - 1))
+        step(1)
       } else if (e.key === 'ArrowUp' || e.key === 'PageUp') {
         e.preventDefault()
-        jumpToScene(Math.max(activeSceneIndex - 1, 0))
+        step(-1)
       }
     }
     window.addEventListener('keydown', onKey)
     return () => window.removeEventListener('keydown', onKey)
-  }, [activeSceneIndex, jumpToScene, toggleMute])
-
-  // Reach the end of the last scene -> ending phase (once).
-  // The last scene has nothing to scroll past, so watch for scroll position
-  // rather than relying on a ScrollTrigger boundary.
-  const endedRef = useRef(false)
-  const onLastScene = activeSceneIndex >= scenes.length - 1
-  useEffect(() => {
-    if (!onLastScene || endedRef.current) return
-
-    const handler = () => {
-      if (endedRef.current) return
-      const max = document.documentElement.scrollHeight - window.innerHeight
-      if (max <= 0) return
-      if (window.scrollY / max > 0.9) {
-        endedRef.current = true
-        setPhase('ending')
-      }
-    }
-
-    window.addEventListener('scroll', handler, { passive: true })
-    handler()
-    return () => window.removeEventListener('scroll', handler)
-  }, [onLastScene, setPhase])
+  }, [step, toggleMute])
 
   // Keep theme CSS vars synced so overlays, controls, and progress read the
   // active palette without prop drilling.

@@ -15,7 +15,7 @@ export function FloatingControls() {
         onClick={toggleMute}
         disabled={!settings.sound}
         data-interactive
-        className="flex h-10 w-10 items-center justify-center rounded-full border border-[var(--scene-text,#faf5eb)]/20 bg-black/30 text-base backdrop-blur-sm transition-all hover:border-[var(--scene-text,#faf5eb)]/40 hover:bg-black/50 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#ffb7c5] disabled:cursor-not-allowed disabled:opacity-40"
+        className="flex h-8 w-8 items-center justify-center rounded-full border border-[var(--scene-text,#faf5eb)]/20 bg-black/30 text-base backdrop-blur-sm transition-all hover:border-[var(--scene-text,#faf5eb)]/40 hover:bg-black/50 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#ffb7c5] disabled:cursor-not-allowed disabled:opacity-40"
         aria-label={musicOn ? 'Mute music' : 'Unmute music'}
         aria-pressed={!musicOn}
       >
@@ -38,7 +38,7 @@ export function FloatingControls() {
         type="button"
         onClick={() => updateSettings({ autoScroll: !settings.autoScroll })}
         data-interactive
-        className={`flex h-10 w-10 items-center justify-center rounded-full border backdrop-blur-sm transition-all focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#ffb7c5] ${
+        className={`flex h-8 w-8 items-center justify-center rounded-full border backdrop-blur-sm transition-all focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#ffb7c5] ${
           settings.autoScroll
             ? 'border-[#ffb7c5]/60 bg-[#ffb7c5]/20 text-[#ffb7c5]'
             : 'border-[var(--scene-text,#faf5eb)]/20 bg-black/30 text-[var(--scene-text,#faf5eb)]/70 hover:border-[var(--scene-text,#faf5eb)]/40'
