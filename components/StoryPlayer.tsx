@@ -57,37 +57,49 @@ export function StoryPlayer() {
 
   // Manual scroll stepper: with auto-scroll off, each wheel/touch gesture
   // advances exactly one scene (up or down) — even a small flick lands on the
-  // next section instead of stopping between scenes. Native scroll is taken
-  // over here; keyboard arrows (below) cover the same jumps.
+  // next section instead of stopping between scenes. A gesture is a burst of
+  // events; we step on the FIRST event of a new burst (gap > 200ms since last
+  // event) and ignore the rest until the burst ends + 900ms cooldown.
   useEffect(() => {
     if (settings.autoScroll) return
 
-    let locked = false
-    const move = (dir: 1 | -1) => {
-      if (locked) return
-      locked = true
-      step(dir)
-      window.setTimeout(() => {
-        locked = false
-      }, 900)
-    }
+    let lastWheel = 0
+    let lastStep = 0
 
     const onWheel = (e: WheelEvent) => {
       e.preventDefault()
       if (Math.abs(e.deltaY) < 2) return
-      move(e.deltaY > 0 ? 1 : -1)
+
+      const now = Date.now()
+      const gap = now - lastWheel
+      lastWheel = now
+
+      // Step only if: new gesture (gap > 200ms) AND cooldown done (> 900ms)
+      if (gap > 200 && now - lastStep > 900) {
+        lastStep = now
+        step(e.deltaY > 0 ? 1 : -1)
+      }
     }
 
     let touchY = 0
+    let lastTouch = 0
     const onTouchStart = (e: TouchEvent) => {
       touchY = e.touches[0].clientY
+      lastTouch = Date.now()
     }
     const onTouchMove = (e: TouchEvent) => {
       e.preventDefault()
       const dy = touchY - e.touches[0].clientY
+      const now = Date.now()
+      const gap = now - lastTouch
+      lastTouch = now
+
       if (Math.abs(dy) < 30) return
-      move(dy > 0 ? 1 : -1)
-      touchY = e.touches[0].clientY
+      if (gap > 200 && now - lastStep > 900) {
+        lastStep = now
+        step(dy > 0 ? 1 : -1)
+        touchY = e.touches[0].clientY
+      }
     }
 
     window.addEventListener('wheel', onWheel, { passive: false })
