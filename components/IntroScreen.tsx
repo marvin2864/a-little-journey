@@ -54,7 +54,7 @@ export function IntroScreen() {
 
       {/* Experience settings */}
       <fieldset className="mt-10 flex w-full flex-col items-center gap-4 px-4">
-        <legend className="w-full text-center text-xs tracking-[0.2em] text-[#faf5eb]/60">
+        <legend className="mb-2 w-full text-center text-xs tracking-[0.2em] text-[#faf5eb]/60">
           EXPERIENCE SETTINGS
         </legend>
         {/* One line on md+; stacks on phones — 3 labeled cards cannot fit 390px
