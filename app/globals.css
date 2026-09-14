@@ -12,6 +12,13 @@
 
 html {
   scroll-behavior: smooth;
+  scroll-snap-type: y mandatory;
+}
+
+/* Auto-scroll mode drives scrolling with Lenis; native snap would fight its
+   per-frame programmatic scroll, so it is disabled there. */
+html.no-snap {
+  scroll-snap-type: none;
 }
 
 body {

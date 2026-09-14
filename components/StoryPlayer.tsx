@@ -29,92 +29,78 @@ export function StoryPlayer() {
 
   useScrollProgress(rootRef)
 
-  // One deliberate advance past FINAL_SHOT (scene 13) rolls to the closing
-  // screen — beat 14 of the film. The FINAL_SHOT video is always seen first:
-  // the ending never fires from scroll position or a timer, only from a
-  // down-move while the last scene is active. A cooldown keeps a held key or
-  // fast trackpad flicks from skipping the final video.
+  // FINAL_SHOT (scene 13) must be watched before the closing screen — beat 14 —
+  // can appear. Because every section is exactly one viewport tall and scene 13
+  // is last, snapping onto it already sits at the scroll bottom, so the ending
+  // can't key off position. It fires only after a full scene duration on the
+  // final scene, then on a deliberate down-move in manual mode or on its own in
+  // auto mode.
   const endedRef = useRef(false)
-  const edgeCooldown = useRef(false)
+  const lastSceneSince = useRef(0)
+  const onLastScene = activeSceneIndex >= scenes.length - 1
+  useEffect(() => {
+    if (onLastScene && !endedRef.current) {
+      lastSceneSince.current = performance.now()
+    }
+  }, [onLastScene])
+
+  const tryFinish = useCallback(() => {
+    if (endedRef.current) return
+    const minDwell = (scenes[scenes.length - 1]?.duration ?? 9) * 1000
+    if (performance.now() - lastSceneSince.current < minDwell) return
+    endedRef.current = true
+    setPhase('ending')
+  }, [setPhase])
+
+  // Advance one scene; a move off the final scene ends the film once watched.
   const step = useCallback(
     (dir: 1 | -1) => {
       const target = activeSceneIndex + dir
       if (target < 0) return
       if (target >= scenes.length) {
-        if (endedRef.current || edgeCooldown.current) return
-        edgeCooldown.current = true
-        window.setTimeout(() => {
-          edgeCooldown.current = false
-        }, 800)
-        endedRef.current = true
-        setPhase('ending')
+        tryFinish()
         return
       }
       jumpToScene(target)
     },
-    [activeSceneIndex, jumpToScene, setPhase],
+    [activeSceneIndex, jumpToScene, tryFinish],
   )
 
-  // Manual scroll stepper: with auto-scroll off, one scroll gesture — however
-  // big — advances exactly ONE scene. A gesture is a continuous stream of
-  // wheel/touch events; every event during a locked gesture only postpones the
-  // unlock (idle timer). Scrolling stops counting as the same gesture after
-  // 450ms of silence, so a long wheel drag = +1, a small flick = +1.
-  // Lock state lives in refs: `step`'s identity changes mid-burst when the
-  // active index updates, and the effect re-run must not re-arm a second step.
-  const wheelLockedRef = useRef(false)
-  const wheelIdleTimerRef = useRef(0)
-  const touchLockedRef = useRef(false)
+  // Manual scroll is handled by CSS scroll-snap on the root scroller (see
+  // app/globals.css + snap-start on each Scene). The platform guarantees the
+  // page always rests on a scene boundary, so a small flick and a hard scroll
+  // both land on exactly the next section. No JS gesture interception — wheel
+  // notch timing varies too much by hardware to distinguish a long burst from
+  // a new gesture, which is what let fast scrolls skip scenes.
+  // Keyboard arrows below still jump one scene at a time.
+
+  // Native snap fights Lenis's per-frame programmatic scroll, so auto mode
+  // (which drives scrolling with Lenis) disables it via a class on <html>.
   useEffect(() => {
-    if (settings.autoScroll) return
+    document.documentElement.classList.toggle('no-snap', settings.autoScroll)
+    return () => document.documentElement.classList.remove('no-snap')
+  }, [settings.autoScroll])
 
-    const GESTURE_IDLE_MS = 450
+  // Auto mode: after FINAL_SHOT's duration + grace, roll to closing screen.
+  // User input cancels.
+  useEffect(() => {
+    if (!settings.autoScroll || reducedMotion || !onLastScene) return
+    if (endedRef.current) return
 
-    const armIdle = () => {
-      window.clearTimeout(wheelIdleTimerRef.current)
-      wheelIdleTimerRef.current = window.setTimeout(() => {
-        wheelLockedRef.current = false
-      }, GESTURE_IDLE_MS)
-    }
+    const grace = (scenes[activeSceneIndex]?.duration ?? 9) * 1000 + 1500
+    const timer = setTimeout(tryFinish, grace)
 
-    const onWheel = (e: WheelEvent) => {
-      e.preventDefault()
-      if (Math.abs(e.deltaY) < 2) return
-      if (wheelLockedRef.current) {
-        // Still the same gesture — absorb it, keep postponing the unlock.
-        armIdle()
-        return
-      }
-      wheelLockedRef.current = true
-      armIdle()
-      step(e.deltaY > 0 ? 1 : -1)
-    }
-
-    // Touch: one finger-down drag = one step. touchstart re-arms the lock,
-    // so lifting and swiping again is required for the next scene.
-    let touchY = 0
-    const onTouchStart = (e: TouchEvent) => {
-      touchY = e.touches[0].clientY
-      touchLockedRef.current = false
-    }
-    const onTouchMove = (e: TouchEvent) => {
-      e.preventDefault()
-      const dy = touchY - e.touches[0].clientY
-      if (touchLockedRef.current || Math.abs(dy) < 30) return
-      touchLockedRef.current = true
-      step(dy > 0 ? 1 : -1)
-    }
-
-    window.addEventListener('wheel', onWheel, { passive: false })
-    window.addEventListener('touchstart', onTouchStart, { passive: true })
-    window.addEventListener('touchmove', onTouchMove, { passive: false })
+    const cancel = () => clearTimeout(timer)
+    window.addEventListener('wheel', cancel, { passive: true })
+    window.addEventListener('touchstart', cancel, { passive: true })
+    window.addEventListener('keydown', cancel)
     return () => {
-      window.clearTimeout(wheelIdleTimerRef.current)
-      window.removeEventListener('wheel', onWheel)
-      window.removeEventListener('touchstart', onTouchStart)
-      window.removeEventListener('touchmove', onTouchMove)
+      cancel()
+      window.removeEventListener('wheel', cancel)
+      window.removeEventListener('touchstart', cancel)
+      window.removeEventListener('keydown', cancel)
     }
-  }, [settings.autoScroll, step])
+  }, [settings.autoScroll, reducedMotion, onLastScene, activeSceneIndex, tryFinish])
 
   // Auto-scroll: advance after each scene settles. Any manual wheel/touch
   // input cancels the pending advance (user is never trapped, DESIGN.md §11).
@@ -143,10 +129,10 @@ export function StoryPlayer() {
     }
   }, [activeSceneIndex, settings.autoScroll, reducedMotion, lenisRef])
 
-  // Keyboard: arrows jump scenes, M toggles mute.
+  // Keyboard: arrows jump scenes, M toggles mute. ArrowDown on last scene
+  // calls step(1) which triggers tryFinish().
   useEffect(() => {
     const onKey = (e: KeyboardEvent) => {
-      // Don't hijack keys while typing in a field.
       const tag = (e.target as HTMLElement | null)?.tagName
       if (tag === 'INPUT' || tag === 'TEXTAREA') return
 
