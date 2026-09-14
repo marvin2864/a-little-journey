@@ -31,8 +31,8 @@ export function IntroScreen() {
       {/* Soft glow behind the logo */}
       <div className="pointer-events-none absolute left-1/2 top-1/2 h-[520px] w-[520px] -translate-x-1/2 -translate-y-1/2 rounded-full bg-gradient-radial from-[#ffb7c5]/10 to-transparent blur-3xl" />
 
-      {/* Logo with breathing animation */}
-      <div className="animate-breathe relative mb-10">
+      {/* Logo - static */}
+      <div className="relative mb-10">
         <Image
           src={LOGO}
           alt="A Little Journey"
@@ -53,8 +53,13 @@ export function IntroScreen() {
       </p>
 
       {/* Experience settings */}
-      <fieldset className="mt-10 flex flex-wrap items-center justify-center gap-x-8 gap-y-3">
-        <legend className="sr-only">Experience settings</legend>
+      <fieldset className="mt-10 flex w-full flex-col items-center gap-4 px-4">
+        <legend className="w-full text-center text-xs tracking-[0.2em] text-[#faf5eb]/60">
+          EXPERIENCE SETTINGS
+        </legend>
+        {/* One line on md+; stacks on phones — 3 labeled cards cannot fit 390px
+            without horizontal overflow. */}
+        <div className="flex w-full flex-col items-center gap-3 md:w-auto md:flex-row md:gap-4">
         <SettingToggle
           label="Sound"
           value={settings.sound ? 'ON' : 'OFF'}
@@ -65,6 +70,7 @@ export function IntroScreen() {
         <SettingToggle
           label="Motion"
           value={settings.motion ? 'ON' : 'REDUCED'}
+          offValue="REDUCED"
           onToggle={() =>
             updateSettings({ motion: !settings.motion })
           }
@@ -76,6 +82,7 @@ export function IntroScreen() {
             updateSettings({ autoScroll: !settings.autoScroll })
           }
         />
+        </div>
       </fieldset>
 
       {/* Enter */}
@@ -91,25 +98,54 @@ export function IntroScreen() {
   )
 }
 
+/** Row with a real switch — reads as a control, not as a status line. */
 function SettingToggle({
   label,
   value,
   onToggle,
+  offValue = 'OFF',
 }: {
   label: string
   value: string
   onToggle: () => void
+  offValue?: string
 }) {
+  const on = value !== offValue
   return (
     <button
       type="button"
       onClick={onToggle}
       data-interactive
-      aria-pressed={value !== 'OFF' && value !== 'REDUCED'}
-      className="flex items-baseline gap-2 text-xs tracking-[0.15em] text-[#faf5eb]/50 transition-colors hover:text-[#faf5eb]/80 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#ffb7c5]"
+      role="switch"
+      aria-checked={on}
+      aria-label={`${label}: ${value}`}
+      className="group flex w-full items-center justify-between gap-3 rounded-full border border-[#faf5eb]/10 bg-[#faf5eb]/[0.03] py-2 pl-4 pr-2 transition-all hover:border-[#faf5eb]/25 hover:bg-[#faf5eb]/[0.07] focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#ffb7c5] md:w-auto"
     >
-      <span>{label}:</span>
-      <span className="text-[#faf5eb]/90">{value}</span>
+      <span className="text-xs tracking-[0.2em] text-[#faf5eb]/60 transition-colors group-hover:text-[#faf5eb]/80">
+        {label.toUpperCase()}
+      </span>
+
+      <span className="flex items-center gap-2">
+        <span
+          className={`text-xs tracking-[0.15em] transition-colors ${
+            on ? 'text-[#faf5eb]/90' : 'text-[#faf5eb]/40'
+          }`}
+        >
+          {value}
+        </span>
+        {/* Switch track */}
+        <span
+          className={`relative h-5 w-9 shrink-0 rounded-full transition-colors duration-300 ${
+            on ? 'bg-[#ffb7c5]/70' : 'bg-[#faf5eb]/15'
+          }`}
+        >
+          <span
+            className={`absolute left-0.5 top-0.5 h-4 w-4 rounded-full bg-[#faf5eb] shadow-sm transition-transform duration-300 ${
+              on ? 'translate-x-4' : 'translate-x-0'
+            }`}
+          />
+        </span>
+      </span>
     </button>
   )
 }
